@@ -58,6 +58,14 @@ it('inputValue should work', async ({ page, server }) => {
   expect(await locator2.inputValue().catch(e => e.message)).toContain('Node is not an <input>, <textarea> or <select> element');
 });
 
+it('inputValue should normalize NBSP to regular space', async ({ page }) => {
+  await page.setContent('<input id="node"></input>');
+  const locator = page.locator('#node');
+  await locator.fill('foo\u00A0bar\u0020baz');
+  const value = await locator.inputValue();
+  expect(value).toBe('foo bar baz');
+});
+
 it('innerHTML should work', async ({ page, server }) => {
   await page.goto(`${server.PREFIX}/dom.html`);
   const locator = page.locator('#outer');
