@@ -365,7 +365,8 @@ export class Frame extends ChannelOwner<channels.FrameChannel> implements api.Fr
   }
 
   async inputValue(selector: string, options: channels.FrameInputValueOptions = {}): Promise<string> {
-    return (await this._channel.inputValue({ selector, ...options })).value;
+    const result = await this._channel.inputValue({ selector, ...options });
+    return result.value.replace(/\u00A0/g, ' ');
   }
 
   async isChecked(selector: string, options: channels.FrameIsCheckedOptions = {}): Promise<boolean> {
