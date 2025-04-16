@@ -20,6 +20,7 @@
   background-color: var(--vscode-sideBar-background);
   padding: 4px 8px;
   min-height: 32px;
+  align-items: center;
 }
 
 .network-filters input[type="search"] {
