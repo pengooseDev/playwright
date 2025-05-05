@@ -38,6 +38,7 @@ import { TraceView } from './uiModeTraceView';
 import { SettingsView } from './settingsView';
 import { DefaultSettingsView } from './defaultSettingsView';
 import { LLMProvider } from './llm';
+import { testStatusIcon } from './testUtils';
 
 let xtermSize = { cols: 80, rows: 24 };
 const xtermDataSource: XtermDataSource = {
@@ -463,10 +464,17 @@ export const UIModeView: React.FC<{}> = ({
         <Toolbar noMinHeight={true}>
           {!isRunningTest && !progress && <div className='section-title'>Tests</div>}
           {!isRunningTest && progress && <div data-testid='status-line' className='status-line'>
-            <div>{progress.passed}/{progress.total} passed ({(progress.passed / progress.total) * 100 | 0}%)</div>
+            <div>
+              <span className={clsx('codicon', testStatusIcon('passed'))} title='Passed'/><span className='status-passed' title='Passed tests'>{progress.passed}</span>
+              <span className={clsx('codicon', testStatusIcon('failed'))} title='Failed'/><span className='status-failed' title='Failed tests'>{progress.failed}</span>
+              <span className={clsx('codicon', testStatusIcon('skipped'))} title='Skipped'/><span className='status-skipped' title='Skipped tests'>{progress.skipped}</span>
+            </div>
           </div>}
           {isRunningTest && progress && <div data-testid='status-line' className='status-line'>
-            <div>Running {progress.passed}/{runningState.testIds.size} passed ({(progress.passed / runningState.testIds.size) * 100 | 0}%)</div>
+            <div>
+              <span>Running {progress.passed + progress.failed}/{runningState.testIds.size - progress.skipped}</span>
+              {progress.skipped > 0 && <span className='status-skipped' title='Skipped tests'>{progress.skipped}</span>}
+            </div>
           </div>}
           <ToolbarButton icon='play' title='Run all — F5' onClick={() => runTests('bounce-if-busy', visibleTestIds)} disabled={isRunningTest || isLoading}></ToolbarButton>
           <ToolbarButton icon='debug-stop' title={'Stop — ' + (isMac ? '⇧F5' : 'Shift + F5')} onClick={() => testServerConnection?.stopTests({})} disabled={!isRunningTest || isLoading}></ToolbarButton>

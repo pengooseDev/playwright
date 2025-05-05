@@ -27,7 +27,7 @@
   margin: 0 0 8px 23px;
 }
 
-.ui-mode-sidebar input[type=search] {
+.ui-mode-sidebar input[type="search"] {
   flex: auto;
 }
 
@@ -94,11 +94,39 @@
 }
 
 .status-line > div {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.status-line .codicon {
+  flex-shrink: 0;
+  margin: 0 2px 0 8px
+}
+
+.status-line > div > span {
+  flex-shrink: 0;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.ui-mode-sidebar input[type=search] {
+.status-passed {
+  font-size: 12px;
+  color: var(--vscode-debugIcon-restartForeground);
+}
+
+.status-failed {
+  font-size: 12px;
+  color: var(--vscode-list-errorForeground);
+}
+
+.status-skipped {
+  font-size: 12px;
+}
+
+.ui-mode-sidebar input[type="search"] {
   flex: auto;
   padding: 0 5px;
   line-height: 24px;
